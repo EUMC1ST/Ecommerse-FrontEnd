@@ -5,8 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EcommerseClient.Models;
+<<<<<<< HEAD
 using System.Net.Http;
 using Newtonsoft.Json;
+=======
+>>>>>>> 4079f7fb95f1147cd294c810cc937e91c2ae9614
 
 namespace EcommerseClient.Controllers
 {
@@ -14,6 +17,7 @@ namespace EcommerseClient.Controllers
     {
         public IActionResult Index()
         {
+<<<<<<< HEAD
             string pathController = "api/ProductCatalogService?pageNumber=1";
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("http://localhost:5001/");
@@ -23,6 +27,9 @@ namespace EcommerseClient.Controllers
             var readresult = result.Content.ReadAsStringAsync().Result;
             var resultadoFinal = JsonConvert.DeserializeObject<ProductCatalog>(readresult);
             return View(resultadoFinal);
+=======
+            return View();
+>>>>>>> 4079f7fb95f1147cd294c810cc937e91c2ae9614
         }
 
         public IActionResult About()
