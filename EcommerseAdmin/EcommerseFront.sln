@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.960
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcommerseAdmin", "EcommerseAdmin\EcommerseAdmin.csproj", "{F34888D3-0E13-42D8-9C26-ED24C9D89AEB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EcommerseClient", "..\EcommerseClient\EcommerseClient.csproj", "{FC59137D-C065-4218-BC41-5581BEEDDBF9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F34888D3-0E13-42D8-9C26-ED24C9D89AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F34888D3-0E13-42D8-9C26-ED24C9D89AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F34888D3-0E13-42D8-9C26-ED24C9D89AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F34888D3-0E13-42D8-9C26-ED24C9D89AEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC59137D-C065-4218-BC41-5581BEEDDBF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC59137D-C065-4218-BC41-5581BEEDDBF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC59137D-C065-4218-BC41-5581BEEDDBF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC59137D-C065-4218-BC41-5581BEEDDBF9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9F52E514-2B38-43DF-A696-096BE161764D}
+	EndGlobalSection
+EndGlobal
