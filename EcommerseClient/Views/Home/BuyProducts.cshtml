@@ -1,5 +1,5 @@
 ﻿@model EcommerseClient.Models.Producto
-
+@* de ayer *@
 <div class="py-5">
 
     <div class="container bg-light py-3 px-lg-5 py-lg-5">
@@ -43,15 +43,33 @@
                             <option>10</option>
 
                         </select>
-
-                        <button type="submit" class="btn btn-info btn-lg ml-3">Add to Cart</button>
+                        <button type="submit" class="btn btn-info btn-lg">Add to Cart</button>
 
                     </div>
-
                 </form>
-
+                <hr />
+                <button class="btn btn-lg btn-info ml-3" onclick="GetRecomendation('@Model.id')">View recomendation</button>
             </div>
 
         </div>
-     </div>
+    </div>
 </div>
+<hr />
+
+<div id="recomendado">
+
+</div>
+
+<script>
+    function GetRecomendation(id)
+    {
+        console.log(3)
+        $.ajax({
+            url: '@Url.Action("Recomendation")?id=' + id,
+            type: 'GET',
+            success: function (result) {
+                $('#recomendado').html(result);
+            }
+        })       
+    }
+</script>
