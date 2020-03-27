@@ -15,38 +15,66 @@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">EcommerseAdmin</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                </ul>
+    <div class="container-fluid">
+            <div class="row col-lg-12">
+                <div class="container-fluid setcolor navbar-fixed-top perfil">
+                    <ul class="nav navbar-nav list-inline pull-right">
+                        <li role="presentation"><a id="ol" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-user fa-lg white-text mr-md-4"></i>Admin</a></li>
+                        <li role="presentation"><a id="ol" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-sign-out fa-lg white-text mr-md-4"></i>Log Out</a></li>
+
+                    </ul>
+
+
+                </div>
+
             </div>
         </div>
-    </nav>
 
-    <partial name="_CookieConsentPartial" />
+    <div class="container-fluid">
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2020 - EcommerseAdmin</p>
-        </footer>
+        <div class="row">
+            <div class="col-sm-3">
+                <nav class="navbar navbar-inverse navbar-fixed-top">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">
+                                Shooping Admin
+                            </a>
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li role="presentation"><a id="ol" asp-area="" asp-controller="Home" asp-action="About"><i class="fa fa-search fa-lg white-text mr-md-4"></i>Search Products</a></li>
+                                <li role="presentation"><a asp-area="" asp-controller="Home" asp-action="About"><i class="fa fa-cart-arrow-down fa-lg white-text mr-md-4"></i>Search Orders</a></li>
+                                <li role="presentation"><a asp-area="" asp-controller="Home" asp-action="Contact"><i class="fa fa-newspaper-o fa-lg white-text mr-md-4"></i>Search Ads</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+
+            <div class="col-sm-9">
+                <partial name="_CookieConsentPartial" />
+
+                <div class="container-fluid body-content">
+                    @RenderBody()
+
+                </div>
+            </div>
+        </div>
     </div>
+
+
+
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -69,6 +97,15 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
+    <script>
+        $(function () {
+            $('.nav a').filter(function () { return this.href == location.href }).parent().addClass('active').siblings().removeClass('active')
+            $('.nav a').click(function () {
+                $(this).parent().addClass('active').siblings().removeClass('active')
+            })
+        })
+        //document.getElementById("ol").addEventListener("click", function () { $(this).addClass('active') });</script>
     @RenderSection("Scripts", required: false)
+
 </body>
 </html>

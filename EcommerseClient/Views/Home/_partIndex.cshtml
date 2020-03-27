@@ -1,0 +1,29 @@
+﻿@model ProductCatalog
+
+<div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model.products)
+            {
+                <div class="col-md-4 px-2 py-1 my-4">
+                    <div class="card shadow-sm h-100">
+                        <svg class="bd-placeholder-img card-img-top" height="225" width="100%" xmlns="http://www.w3.org/2000/svg">
+                            <image href="@item.picture" height="100%" width="100%" />
+                        </svg>
+                        <div class="card-body">
+                            <h5 class="card-title">@item.name</h5>
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                @*<button type="button" class="btn btn-sm btn-outline-secondary"><a href="/Home/BuyProduct/@item.id">Buy</a></button>*@
+                                @*<a href="/Home/BuyProduct/@item.id" class="btn btn-sm btn-outline-secondary">Buy</a>*@
+                                <a onclick="Buy('@item.id')" class="btn btn-sm btn-outline-secondary">Buy</a>
+                                <div>@item.priceUsd.currencyCode @item.priceUsd.units.@item.priceUsd.nanos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
