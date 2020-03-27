@@ -1,55 +1,67 @@
-@model ProductCatalog
 
-<div class="album py-5 bg-light">
-    <div class="container">
-        <div class="row">
-            @foreach (var item in Model.products)
-            {
-                <div class="col-md-4 px-2 py-1 my-4">
-                    <div class="card shadow-sm h-100">
-                        <svg class="bd-placeholder-img card-img-top" height="225" width="100%" xmlns="http://www.w3.org/2000/svg">
-                            <image href="@item.picture" height="100%" width="100%" />
-                        </svg>
-                        <div class="card-body">
-                            <h5 class="card-title">@item.name</h5>
-                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                @*<button type="button" class="btn btn-sm btn-outline-secondary"><a href="/Home/BuyProduct/@item.id">Buy</a></button>*@
-                                <a href="/Home/BuyProduct/@item.id" class="btn btn-sm btn-outline-secondary">Buy</a>
-                                <spam>@item.priceUsd.currencyCode @item.priceUsd.units.@item.priceUsd.nanos</spam>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
+    <div id="contenedor">
+   
     </div>
-</div>
 
+    <script>
 
-@*
-        Mi version
-    <div class="container">
-        <div class="row">
-            @foreach (var item in Model.products)
+        function TraeProduct() {
+            $.ajax(
             {
-                <div class="col-md-4 px-2 py-1 my-4 shadow-sm">
-                    <div class="card bg-light h-100">
-                        <div class="imagebox">
-                            <a href="">
-                                <img src="@item.picture" class="card-img-top img-fluid img-thumbnail" style="max-height:100%;max-width:100%" alt="...">
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">@item.name</h5>
-                            <a href="~/Producto/Details/@item.id" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>*@
+                url: '@Url.Action("Inde")?currency=' + $('#currencySelec').val(),
+                type: 'GET',
+                success: function (result) {
+                    $('#contenedor').html(result);
+                }
+             });
+        }
 
+        function Buy(id) {
+            $.ajax(
+            {
+                url: '@Url.Action("BuyProducts")?id=' + id + '&currency=' + $('#currencySelec').val(),
+                type: 'GET',
+                success: function (result) {
+                    $('#contenedor').html(result);
+                }
+             });
+        }
+
+        function Carro(curren, unit, nano) {
+            $.ajax(
+            {
+                    url: '/api/cart',
+                    type: 'POST',
+                    data:
+                    {
+                        idClient: 'ELid',
+                        idProduct: $("#prodId").val(),
+                        quantity: $("#quantity").val(),
+                        currency: curren,
+                        units: unit,
+                        nanos: nano
+                    },
+                    success: function () {
+                        document.location = "Home/TheCart";
+                    }
+                });            
+        }
+
+        function shipping() {
+            $.ajax({
+                url: '@Url.Action("Shipping")',
+                type: 'POST',
+                data:
+                {
+                    eltotal: $('#eltotal').text()
+                },
+                success: function (result) {
+                    console.log(result);
+                    $('#shippingCost').html(result);
+                }
+            });
+        }
+    </script>
 
 
 
