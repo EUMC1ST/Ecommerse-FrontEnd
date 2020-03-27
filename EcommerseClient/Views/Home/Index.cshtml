@@ -3,19 +3,7 @@
    
     </div>
 
-    <p>If you click on me, I will disappear.</p>
-    <p>Click me away!</p>
-    <p>Click me too!</p>
-
-
-
     <script>
-        $(document).ready(function () {
-            $("p").click(function () {
-                $(this).hide();
-            });
-        });
-
 
         function TraeProduct() {
             $.ajax(
@@ -38,33 +26,42 @@
                 }
              });
         }
-    </script>
 
+        function Carro(curren, unit, nano) {
+            $.ajax(
+            {
+                    url: '/api/cart',
+                    type: 'POST',
+                    data:
+                    {
+                        idClient: 'ELid',
+                        idProduct: $("#prodId").val(),
+                        quantity: $("#quantity").val(),
+                        currency: curren,
+                        units: unit,
+                        nanos: nano
+                    },
+                    success: function () {
+                        document.location = "Home/TheCart";
+                    }
+                });            
+        }
 
-
-    @*
-            Mi version
-        <div class="container">
-            <div class="row">
-                @foreach (var item in Model.products)
+        function shipping() {
+            $.ajax({
+                url: '@Url.Action("Shipping")',
+                type: 'POST',
+                data:
                 {
-                    <div class="col-md-4 px-2 py-1 my-4 shadow-sm">
-                        <div class="card bg-light h-100">
-                            <div class="imagebox">
-                                <a href="">
-                                    <img src="@item.picture" class="card-img-top img-fluid img-thumbnail" style="max-height:100%;max-width:100%" alt="...">
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">@item.name</h5>
-                                <a href="~/Producto/Details/@item.id" class="btn btn-primary">Go somewhere</a>
-                            </div>
-                        </div>
-                    </div>
+                    eltotal: $('#eltotal').text()
+                },
+                success: function (result) {
+                    console.log(result);
+                    $('#shippingCost').html(result);
                 }
-            </div>
-        </div>*@
-
+            });
+        }
+    </script>
 
 
 

@@ -4,13 +4,15 @@
 
     <div class="container bg-light py-3 px-lg-5 py-lg-5">
         <div class="row">
+            <div id="foto" hidden>@Model.picture</div>
+            <input type="hidden" value="@Model.id" id="prodId"/>
             <div class="col-12 col-lg-5">
                 <img class="img-fluid border" style="width: 100%;" src="@Model.picture" />
             </div>
             <div class="col-12 col-lg-7">
-                <h2>@Model.name</h2>
+                <h2 id="titulo">@Model.name</h2>
                 <p class="text-muted">
-                    @Model.priceUsd.units.@Model.priceUsd.nanos
+                    @Model.priceUsd.currencyCode @Model.priceUsd.units.@Model.priceUsd.nanos
                 </p>
                 <hr />
                 <p>
@@ -18,35 +20,31 @@
                     @Model.description
                 </p>
                 <hr />
-                <form method="POST" action="/cart" class="form-inline text-muted">
+                <input type="hidden" name="product_id" value="" />
 
-                    <input type="hidden" name="product_id" value="" />
+                <div class="input-group">
 
-                    <div class="input-group">
-
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupSelect01">Quantity</label>
-                        </div>
-
-                        <select name="quantity" id="quantity" class="custom-select-lg">
-
-                            <option>1</option>
-
-                            <option>2</option>
-
-                            <option>3</option>
-
-                            <option>4</option>
-
-                            <option>5</option>
-
-                            <option>10</option>
-
-                        </select>
-                        <button type="submit" class="btn btn-info btn-lg">Add to Cart</button>
-
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Quantity</label>
                     </div>
-                </form>
+
+                    <select name="quantity" id="quantity" class="custom-select-lg">
+
+                        <option>1</option>
+
+                        <option>2</option>
+
+                        <option>3</option>
+
+                        <option>4</option>
+
+                        <option>5</option>
+
+                        <option>10</option>
+
+                    </select>
+                    <button class="btn btn-info btn-lg" onclick="Carro('@Model.priceUsd.currencyCode', '@Model.priceUsd.units', '@Model.priceUsd.nanos')">Add to Cart</button>
+                </div>
                 <hr />
                 <button class="btn btn-lg btn-info ml-3" onclick="GetRecomendation('@Model.id')">View recomendation</button>
             </div>

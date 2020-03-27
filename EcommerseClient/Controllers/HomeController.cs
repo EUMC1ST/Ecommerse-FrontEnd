@@ -115,6 +115,68 @@ namespace EcommerseClient.Controllers
         }
 
 
+        [HttpPost]
+        [Route("api/cart")]
+        public IActionResult AddProductToCart(itemToCart info)
+        {
+            new CartService().Cart(new AddProductToCart()
+            {
+                idClient = info.idClient,
+                idProduct = info.idProduct,
+                quantity = info.quantity
+            });
+
+            //string r = HttpContext.Request.Cookies["user_id"];
+            //List<itemToCart> list = new List<itemToCart>();
+            //if (r == null)
+            //{
+            //    list.Add(info);
+            //    HttpContext.Response.Cookies.Append("user_id", JsonConvert.SerializeObject(list));
+            //}
+            //else
+            //{
+            //    list = JsonConvert.DeserializeObject<List<itemToCart>>(r);
+            //    list.Add(info);
+            //    HttpContext.Response.Cookies.Append("user_id", JsonConvert.SerializeObject(list));
+            //}
+            return Ok();
+        }
+
+        public IActionResult TheCart()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public double Shipping(Total total)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5003/");
+            string json = JsonConvert.SerializeObject(total.eltotal); //----
+            var httpcontent = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = client.PostAsync("api/shipping/estimate/" + total.eltotal , httpcontent);
+            response.Wait();
+            var result = response.Result;
+            var readresult = result.Content.ReadAsStringAsync().Result;
+            var resultadoFinal = JsonConvert.DeserializeObject<ShippingCost>(readresult);
+            return resultadoFinal.calculatedShippingCost;
+        }
+
+        [HttpPost]
+        public IActionResult CheckOut(UserInfo userinfo)
+        {
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri("http://localhost:5008/");
+            string json = JsonConvert.SerializeObject(userinfo); //----
+            var httpcontent = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = client.PostAsync("/api/checkout", httpcontent);
+            response.Wait();
+            var result = response.Result;
+            var readresult = result.Content.ReadAsStringAsync().Result;
+            var resultadoFinal = JsonConvert.DeserializeObject<CheckoutModel>(readresult);
+            return PartialView(resultadoFinal);
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
