@@ -1,0 +1,43 @@
+﻿<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" onclick="TraeProduct()">Home <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <form class="form-inline my-2">
+                @*<select onchange="location = this.value" class="custom-select custom-select-sm custom-control-inline">
+                    <option>Currency</option>
+                    <option value="/Home/Index?currency=USD">USD</option>
+                    <option value="/Home/Index?currency=MXN">MXN</option>
+                </select>*@
+                <select id="currencySelec" onchange="TraeProduct()" class="custom-select custom-select-sm custom-control-inline">
+                    <option>USD</option>
+                    <option>MXN</option>
+                </select>
+            </form>
+
+            <form class="form-inline my-2 my-lg-0 mr-0 ml-auto">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Search...">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-secondary btn-number">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <a class="btn btn-success btn-sm ml-md-1 my-2" href="cart.html">
+                    <i class="fa fa-shopping-cart"></i> Cart
+                    <span class="badge badge-light">3</span>
+                </a>
+            </form>
+        </div>
+    </div>
+</nav>
+

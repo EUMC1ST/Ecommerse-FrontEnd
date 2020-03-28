@@ -1,0 +1,61 @@
+﻿@model EcommerseAdmin.Models.Producto
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Producto</h4>
+<hr />
+
+@using (Html.BeginForm("SearchProductByName", "Product", FormMethod.Post))
+
+{
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="id" class="control-label"></label>
+                    <input asp-for="id" class="form-control" />
+                    <span asp-validation-for="id" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="name" class="control-label"></label>
+                    <input asp-for="name" class="form-control" />
+                    <span asp-validation-for="name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="description" class="control-label"></label>
+                    <input asp-for="description" class="form-control" />
+                    <span asp-validation-for="description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="picture" class="control-label"></label>
+                    <input asp-for="picture" class="form-control" />
+                    <span asp-validation-for="picture" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" onclick="save()" class="btn btn-default" />
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+<script type="text/javascript">
+    function save() {
+        document.forms[0].submit();
+    }
+</script>
