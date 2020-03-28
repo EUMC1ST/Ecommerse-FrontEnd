@@ -22,7 +22,21 @@ namespace EcommerseClient.Controllers
 
         public IActionResult Index()
         {
+            //if (HttpContext.Request.Cookies["UserId"] == null)
+            //{
+            //    string info = Guid.NewGuid().ToString();
+            //    HttpContext.Response.Cookies.Append("UserId", info);
+            //}
+            GenerateCookie();
             return View();
+        }
+        public void GenerateCookie()
+        {
+            if (HttpContext.Request.Cookies["UserId"] == null)
+            {
+                string info = Guid.NewGuid().ToString();
+                HttpContext.Response.Cookies.Append("UserId", info);
+            }
         }
 
         [HttpGet]
@@ -119,32 +133,27 @@ namespace EcommerseClient.Controllers
         [Route("api/cart")]
         public IActionResult AddProductToCart(itemToCart info)
         {
+            
             new CartService().Cart(new AddProductToCart()
             {
-                idClient = info.idClient,
+                idClient = HttpContext.Request.Cookies["UserId"],
                 idProduct = info.idProduct,
                 quantity = info.quantity
             });
-
-            //string r = HttpContext.Request.Cookies["user_id"];
-            //List<itemToCart> list = new List<itemToCart>();
-            //if (r == null)
-            //{
-            //    list.Add(info);
-            //    HttpContext.Response.Cookies.Append("user_id", JsonConvert.SerializeObject(list));
-            //}
-            //else
-            //{
-            //    list = JsonConvert.DeserializeObject<List<itemToCart>>(r);
-            //    list.Add(info);
-            //    HttpContext.Response.Cookies.Append("user_id", JsonConvert.SerializeObject(list));
-            //}
             return Ok();
         }
 
         public IActionResult TheCart()
         {
-            return View();
+            HttpClient clienttt = new HttpClient();
+            string pathController = "api/CartService/" + HttpContext.Request.Cookies["UserId"];
+            clienttt.BaseAddress = new Uri("http://localhost:5000/");
+            var response = clienttt.GetAsync(pathController);
+            response.Wait();
+            var result = response.Result;
+            var readresult = result.Content.ReadAsStringAsync().Result;
+            var resultadoFinal = JsonConvert.DeserializeObject<Cart>(readresult);
+            return View(resultadoFinal);
         }
 
         [HttpPost]
