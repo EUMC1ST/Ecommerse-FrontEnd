@@ -23,12 +23,29 @@ namespace EcommerseClient.Controllers
 
         public IActionResult Index()
         {
+<<<<<<< HEAD
             if (HttpContext.Request.Cookies["UserId"] == null)
             {
                 string info = Guid.NewGuid().ToString();
                 HttpContext.Response.Cookies.Append("UserId", info);
             }
+=======
+            //if (HttpContext.Request.Cookies["UserId"] == null)
+            //{
+            //    string info = Guid.NewGuid().ToString();
+            //    HttpContext.Response.Cookies.Append("UserId", info);
+            //}
+            GenerateCookie();
+>>>>>>> 4126300ddcea93b2efe7904963c09d424e69be93
             return View();
+        }
+        public void GenerateCookie()
+        {
+            if (HttpContext.Request.Cookies["UserId"] == null)
+            {
+                string info = Guid.NewGuid().ToString();
+                HttpContext.Response.Cookies.Append("UserId", info);
+            }
         }
 
         [HttpGet]
@@ -96,9 +113,14 @@ namespace EcommerseClient.Controllers
         [Route("api/cart")]
         public IActionResult AddProductToCart(itemToCart info)
         {
+<<<<<<< HEAD
             CartService.Cart(new AddProductToCart()
+=======
+            
+            new CartService().Cart(new AddProductToCart()
+>>>>>>> 4126300ddcea93b2efe7904963c09d424e69be93
             {
-                idClient = info.idClient,
+                idClient = HttpContext.Request.Cookies["UserId"],
                 idProduct = info.idProduct,
                 quantity = info.quantity
             });
@@ -107,7 +129,15 @@ namespace EcommerseClient.Controllers
 
         public IActionResult TheCart()
         {
-            return View();
+            HttpClient clienttt = new HttpClient();
+            string pathController = "api/CartService/" + HttpContext.Request.Cookies["UserId"];
+            clienttt.BaseAddress = new Uri("http://localhost:5000/");
+            var response = clienttt.GetAsync(pathController);
+            response.Wait();
+            var result = response.Result;
+            var readresult = result.Content.ReadAsStringAsync().Result;
+            var resultadoFinal = JsonConvert.DeserializeObject<Cart>(readresult);
+            return View(resultadoFinal);
         }
 
         [HttpPost]
