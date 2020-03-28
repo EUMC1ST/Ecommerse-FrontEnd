@@ -9,33 +9,32 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using EcommerseClient.Services;
 
 namespace EcommerseClient.Controllers
 {
     public class HomeController : Controller
     {
-        HttpClient client;
-        public HomeController()
-        {
-            client = new HttpClient();
-        }
+        //HttpClient client;
+        //public HomeController()
+        //{
+        //    client = new HttpClient();
+        //}
 
         public IActionResult Index()
         {
+            if (HttpContext.Request.Cookies["UserId"] == null)
+            {
+                string info = Guid.NewGuid().ToString();
+                HttpContext.Response.Cookies.Append("UserId", info);
+            }
             return View();
         }
 
         [HttpGet]
-        public IActionResult Inde(string currency = "USD")
+        public IActionResult Products(string currency = "USD")
         {
-            string pathController = "api/ProductCatalogService?pageNumber=1";
-            client.BaseAddress = new Uri("http://localhost:5001/");
-            var response = client.GetAsync(pathController);
-            response.Wait();
-            var result = response.Result;
-            var readresult = result.Content.ReadAsStringAsync().Result;
-            var resultadoFinal = JsonConvert.DeserializeObject<ProductCatalog>(readresult);
-
+            var resultadoFinal = ProductCatalogService.Catalog();
             if (currency != null && currency != "USD")
             {
                 for (int i = 0; i < resultadoFinal.products.Count; i++)
@@ -49,55 +48,34 @@ namespace EcommerseClient.Controllers
         [HttpGet]
         public IActionResult BuyProducts(string id, string currency)
         {
-            HttpClient clienttt = new HttpClient();
-            string pathController = "api/ProductCatalogService/" + id;
-            clienttt.BaseAddress = new Uri("http://localhost:5001/");
-            var response = clienttt.GetAsync(pathController);
-            response.Wait();
-            var result = response.Result;
-            var readresult = result.Content.ReadAsStringAsync().Result;
-            var resultadoFinal = JsonConvert.DeserializeObject<Producto>(readresult);
-
+            Producto Theproduct = ProductCatalogService.Info(id);
             //-- convierte currency
             if (currency != null && currency != "USD")
             {
-                resultadoFinal = CurrencyConverter(resultadoFinal, currency, new HttpClient());
+                Theproduct = CurrencyConverter(Theproduct, currency, new HttpClient());
             }
-            return PartialView(resultadoFinal);
+            return PartialView(Theproduct);
         }
 
         [HttpGet]
         public IActionResult Recomendation(string id)
         {
-            HttpClient clienttt = new HttpClient();
-            string pathController = "api/RecomendationService/" + id;
-            clienttt.BaseAddress = new Uri("http://localhost:5007/");
-            var response = clienttt.GetAsync(pathController);
-            response.Wait();
-            var result = response.Result;
-            var readresult = result.Content.ReadAsStringAsync().Result;
-            var resultadoFinal = JsonConvert.DeserializeObject<List<Producto>>(readresult);
-            return PartialView(resultadoFinal);
+            List<Producto> recomended = RecomendationService.Recomended(id);
+            return PartialView(recomended);
         }
 
         public static Producto CurrencyConverter(Producto obj, string currency, HttpClient CurrencyClient)
         {
-            string path = "api/currency/conversion";
-            CurrencyClient.BaseAddress = new Uri("http://localhost:5004/");
-            string json = JsonConvert.SerializeObject(
-                new CurrencyChange()
-                {
-                    CurrencyCode = "USD",
-                    CurrencyType = currency,
-                    Nano = obj.priceUsd.nanos,
-                    Units = obj.priceUsd.units
-                });
-            var httpcontent = new StringContent(json, Encoding.UTF8, "application/json");
-            var resp = CurrencyClient.PostAsync(path, httpcontent);
-            resp.Wait();
-            var resul = resp.Result;
-            var readresul = resul.Content.ReadAsStringAsync().Result;
-            string resulFin = JsonConvert.DeserializeObject<double>(readresul).ToString();
+            CurrencyChange currencyChange = new CurrencyChange()
+            {
+                CurrencyCode = "USD",
+                CurrencyType = currency,
+                Nano = obj.priceUsd.nanos,
+                Units = obj.priceUsd.units
+            };
+
+            double newCurrency = CurrencyService.Conversion(currencyChange);
+            string resulFin = newCurrency + "";
             string[] separators = { "." };
             string[] words = resulFin.Split(separators, StringSplitOptions.RemoveEmptyEntries);
             try
@@ -114,31 +92,16 @@ namespace EcommerseClient.Controllers
             return obj;
         }
 
-
         [HttpPost]
         [Route("api/cart")]
         public IActionResult AddProductToCart(itemToCart info)
         {
-            new CartService().Cart(new AddProductToCart()
+            CartService.Cart(new AddProductToCart()
             {
                 idClient = info.idClient,
                 idProduct = info.idProduct,
                 quantity = info.quantity
             });
-
-            //string r = HttpContext.Request.Cookies["user_id"];
-            //List<itemToCart> list = new List<itemToCart>();
-            //if (r == null)
-            //{
-            //    list.Add(info);
-            //    HttpContext.Response.Cookies.Append("user_id", JsonConvert.SerializeObject(list));
-            //}
-            //else
-            //{
-            //    list = JsonConvert.DeserializeObject<List<itemToCart>>(r);
-            //    list.Add(info);
-            //    HttpContext.Response.Cookies.Append("user_id", JsonConvert.SerializeObject(list));
-            //}
             return Ok();
         }
 
@@ -150,50 +113,24 @@ namespace EcommerseClient.Controllers
         [HttpPost]
         public double Shipping(Total total)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5003/");
-            string json = JsonConvert.SerializeObject(total.eltotal); //----
-            var httpcontent = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = client.PostAsync("api/shipping/estimate/" + total.eltotal , httpcontent);
-            response.Wait();
-            var result = response.Result;
-            var readresult = result.Content.ReadAsStringAsync().Result;
-            var resultadoFinal = JsonConvert.DeserializeObject<ShippingCost>(readresult);
+            //HttpClient client = new HttpClient();
+            //client.BaseAddress = new Uri("http://localhost:5003/");
+            //string json = JsonConvert.SerializeObject(total.eltotal); //----
+            //var httpcontent = new StringContent(json, Encoding.UTF8, "application/json");
+            //var response = client.PostAsync("api/shipping/estimate/" + total.eltotal, httpcontent);
+            //response.Wait();
+            //var result = response.Result;
+            //var readresult = result.Content.ReadAsStringAsync().Result;
+            //var resultadoFinal = JsonConvert.DeserializeObject<ShippingCost>(readresult);
+            ShippingCost resultadoFinal = ShippingService.Estimate(total.eltotal);
             return resultadoFinal.calculatedShippingCost;
         }
 
         [HttpPost]
         public IActionResult CheckOut(UserInfo userinfo)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:5008/");
-            string json = JsonConvert.SerializeObject(userinfo); //----
-            var httpcontent = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = client.PostAsync("/api/checkout", httpcontent);
-            response.Wait();
-            var result = response.Result;
-            var readresult = result.Content.ReadAsStringAsync().Result;
-            var resultadoFinal = JsonConvert.DeserializeObject<CheckoutModel>(readresult);
-            return PartialView(resultadoFinal);
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            CheckoutModel checkoutModel = CheckoutService.Checkout(userinfo);
+            return PartialView(checkoutModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

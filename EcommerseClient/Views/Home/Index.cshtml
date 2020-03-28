@@ -1,14 +1,15 @@
 
-    <div id="contenedor">
-   
-    </div>
 
-    <script>
+<div id="contenedor">
+
+</div>
+
+<script>
 
         function TraeProduct() {
             $.ajax(
             {
-                url: '@Url.Action("Inde")?currency=' + $('#currencySelec').val(),
+                url: '@Url.Action("Products")?currency=' + $('#currencySelec').val(),
                 type: 'GET',
                 success: function (result) {
                     $('#contenedor').html(result);
@@ -44,7 +45,7 @@
                     success: function () {
                         document.location = "Home/TheCart";
                     }
-                });            
+                });
         }
 
         function shipping() {
@@ -61,7 +62,7 @@
                 }
             });
         }
-    </script>
+</script>
 
 
 
