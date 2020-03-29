@@ -2,7 +2,7 @@
 
 namespace EcommerseClient.Services
 {
-    public class CheckoutService //ACTUALIZAR
+    public class CheckoutService 
     {
         public static string BaseUrl = "http://localhost:5008/";
 

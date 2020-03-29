@@ -44,7 +44,7 @@
                             </strong>
                         </div>
                     </div>
-                    total =0 /*item.quantity * (item.units + item.nanos / (item.nanos.ToString().Length)) + total*/;
+                    total = 0 /*item.quantity * (item.units + item.nanos / (item.nanos.ToString().Length)) + total*/;
                 }
 
                 <div class="row pt-2 my-3">
@@ -60,55 +60,55 @@
         <div class="row py-3 my-2">
             <div class="col-12 col-lg-8 offset-lg-2">
                 <h3>Checkout</h3>
-                <form action="/Home/" method="POST">
+                <form action="/Home/CheckOut" method="POST">
                     <div class="form-row">
                         <div class="col-md-5 mb-3">
                             <label for="email">E-mail Address</label>
                             <input type="email" class="form-control" id="email"
-                                   name="email" value="someone@example.com" required>
+                                   name="Email" value="someone@example.com" required>
                         </div>
                         <div class="col-md-5 mb-3">
                             <label for="street_address">Street Address</label>
-                            <input type="text" class="form-control" name="street_address"
+                            <input type="text" class="form-control" name="StreetAddress1"
                                    id="street_address" value="1600 Amphitheatre Parkway" required>
                         </div>
                         <div class="col-md-2 mb-3">
                             <label for="zip_code">Zip Code</label>
                             <input type="text" class="form-control"
-                                   name="zip_code" id="zip_code" value="94043" required pattern="\d{4,5}">
+                                   name="ZipCode" id="zip_code" value="94043" required pattern="\d{4,5}">
                         </div>
 
                     </div>
                     <div class="form-row">
                         <div class="col-md-5 mb-3">
                             <label for="city">City</label>
-                            <input type="text" class="form-control" name="city" id="city"
+                            <input type="text" class="form-control" name="City" id="city"
                                    value="Mountain View" required>
                         </div>
                         <div class="col-md-2 mb-3">
                             <label for="state">State</label>
-                            <input type="text" class="form-control" name="state" id="state"
+                            <input type="text" class="form-control" name="StreetAddress2" id="state"
                                    value="CA" required>
                         </div>
                         <div class="col-md-5 mb-3">
                             <label for="country">Country</label>
                             <input type="text" class="form-control" id="country"
                                    placeholder="Country Name"
-                                   name="country" value="United States" required>
+                                   name="Country" value="United States" required>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-md-6 mb-3">
                             <label for="credit_card_number">Credit Card Number</label>
                             <input type="text" class="form-control" id="credit_card_number"
-                                   name="credit_card_number"
+                                   name="Credit_number_Card"
                                    placeholder="0000-0000-0000-0000"
                                    value="4432-8015-6152-0454"
                                    required pattern="\d{4}-\d{4}-\d{4}-\d{4}">
                         </div>
                         <div class="col-md-2 mb-3">
                             <label for="credit_card_expiration_month">Month</label>
-                            <select name="credit_card_expiration_month" id="credit_card_expiration_month"
+                            <select name="Credit_Card_Month" id="credit_card_expiration_month"
                                     class="form-control">
                                 <option value="1"> January </option>
                                 <option value="2">February</option>
@@ -126,16 +126,20 @@
                         </div>
                         <div class="col-md-2 mb-3">
                             <label for="credit_card_expiration_year">Year</label>
-                            <select name="credit_card_expiration_year" id="credit_card_expiration_year"
+                            <select name="Credit_Card_Year" id="credit_card_expiration_year"
                                     class="form-control">
-                                <option>  </option>
+                                <option> 2020 </option>
+                                <option> 2021 </option>
+                                <option> 2022 </option>
+                                <option> 2023 </option>
+                                <option> 2024 </option>
                             </select>
                         </div>
                         <div class="col-md-2 mb-3">
                             <label for="credit_card_cvv">CVV</label>
                             <input type="password" class="form-control" id="credit_card_cvv"
                                    autocomplete="off"
-                                   name="credit_card_cvv" value="672" required pattern="\d{3}">
+                                   name="CVV" value="672" required pattern="\d{3}">
                         </div>
                     </div>
                     <div class="form-row">
@@ -148,3 +152,16 @@
     </div>
 </div>
 
+<script>
+    function TraeProduct() {
+            $.ajax(
+            {
+                url: '@Url.Action("Products")?currency=' + $('#currencySelec').val(),
+                type: 'GET',
+                success: function (result) {
+                $('#contenedor').html(result);
+                }
+            });
+    }
+</script>
+        

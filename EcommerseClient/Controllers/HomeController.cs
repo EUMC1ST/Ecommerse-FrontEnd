@@ -15,28 +15,9 @@ namespace EcommerseClient.Controllers
 {
     public class HomeController : Controller
     {
-        //HttpClient client;
-        //public HomeController()
-        //{
-        //    client = new HttpClient();
-        //}
-
         public IActionResult Index()
         {
-<<<<<<< HEAD
-            if (HttpContext.Request.Cookies["UserId"] == null)
-            {
-                string info = Guid.NewGuid().ToString();
-                HttpContext.Response.Cookies.Append("UserId", info);
-            }
-=======
-            //if (HttpContext.Request.Cookies["UserId"] == null)
-            //{
-            //    string info = Guid.NewGuid().ToString();
-            //    HttpContext.Response.Cookies.Append("UserId", info);
-            //}
             GenerateCookie();
->>>>>>> 4126300ddcea93b2efe7904963c09d424e69be93
             return View();
         }
         public void GenerateCookie()
@@ -113,12 +94,7 @@ namespace EcommerseClient.Controllers
         [Route("api/cart")]
         public IActionResult AddProductToCart(itemToCart info)
         {
-<<<<<<< HEAD
             CartService.Cart(new AddProductToCart()
-=======
-            
-            new CartService().Cart(new AddProductToCart()
->>>>>>> 4126300ddcea93b2efe7904963c09d424e69be93
             {
                 idClient = HttpContext.Request.Cookies["UserId"],
                 idProduct = info.idProduct,
@@ -129,29 +105,13 @@ namespace EcommerseClient.Controllers
 
         public IActionResult TheCart()
         {
-            HttpClient clienttt = new HttpClient();
-            string pathController = "api/CartService/" + HttpContext.Request.Cookies["UserId"];
-            clienttt.BaseAddress = new Uri("http://localhost:5000/");
-            var response = clienttt.GetAsync(pathController);
-            response.Wait();
-            var result = response.Result;
-            var readresult = result.Content.ReadAsStringAsync().Result;
-            var resultadoFinal = JsonConvert.DeserializeObject<Cart>(readresult);
-            return View(resultadoFinal);
+            Cart cart = CartService.GetCart(HttpContext.Request.Cookies["UserId"]);
+            return View(cart);
         }
 
         [HttpPost]
         public double Shipping(Total total)
         {
-            //HttpClient client = new HttpClient();
-            //client.BaseAddress = new Uri("http://localhost:5003/");
-            //string json = JsonConvert.SerializeObject(total.eltotal); //----
-            //var httpcontent = new StringContent(json, Encoding.UTF8, "application/json");
-            //var response = client.PostAsync("api/shipping/estimate/" + total.eltotal, httpcontent);
-            //response.Wait();
-            //var result = response.Result;
-            //var readresult = result.Content.ReadAsStringAsync().Result;
-            //var resultadoFinal = JsonConvert.DeserializeObject<ShippingCost>(readresult);
             ShippingCost resultadoFinal = ShippingService.Estimate(total.eltotal);
             return resultadoFinal.calculatedShippingCost;
         }
@@ -159,8 +119,10 @@ namespace EcommerseClient.Controllers
         [HttpPost]
         public IActionResult CheckOut(UserInfo userinfo)
         {
+            userinfo.UserId = HttpContext.Request.Cookies["UserId"];
+            userinfo.CurrencyExchange = "USD";
             CheckoutModel checkoutModel = CheckoutService.Checkout(userinfo);
-            return PartialView(checkoutModel);
+            return View(checkoutModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

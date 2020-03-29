@@ -10,6 +10,9 @@ namespace EcommerseClient.Services
             string output = new HttpRequests().ThePost<AddProductToCart>(input, "api/CartService", BaseUrl);
         }
 
-
+        public static Cart GetCart(string userId)
+        {
+            return new HttpRequests().TheGet<Cart>("api/CartService/" + userId, BaseUrl);
+        }
     }
 }
