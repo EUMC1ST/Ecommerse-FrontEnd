@@ -1,10 +1,11 @@
 ﻿using EcommerseClient.Models;
+using System;
 
 namespace EcommerseClient.Services
 {
     public class ProductCatalogService
     {
-        public static string BaseUrl = "http://localhost:5001/";
+        public static string BaseUrl = Environment.GetEnvironmentVariable("ProductCatalogService");
 
         public static ProductCatalog Catalog(string page = "1")
         {

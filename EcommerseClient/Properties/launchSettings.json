@@ -12,7 +12,13 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "RecomendationService": "http://localhost:5007/",
+        "CurrencyService": "http://localhost:5004/",
+        "ProductCatalogService": "http://localhost:5001/",
+        "ShippingService": "http://localhost:5003/",
+        "CheckoutService": "http://localhost:5008/",
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "CartService": "http://localhost:5000/"
       }
     },
     "EcommerseClient": {

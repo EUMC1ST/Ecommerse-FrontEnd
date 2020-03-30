@@ -7,7 +7,7 @@ namespace EcommerseClient.Services
 {
     public class ShippingService
     {
-        public static string BaseUrl = "http://localhost:5003/";
+        public static string BaseUrl = Environment.GetEnvironmentVariable("ShippingService");
 
         public static ShippingCost Estimate(double total)
         {

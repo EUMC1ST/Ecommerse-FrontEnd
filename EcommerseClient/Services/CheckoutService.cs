@@ -1,10 +1,11 @@
 ﻿using EcommerseClient.Models;
+using System;
 
 namespace EcommerseClient.Services
 {
     public class CheckoutService 
     {
-        public static string BaseUrl = "http://localhost:5008/";
+        public static string BaseUrl = Environment.GetEnvironmentVariable("CheckoutService");
 
         public static CheckoutModel Checkout(UserInfo userInfo)
         {

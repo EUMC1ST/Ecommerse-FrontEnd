@@ -1,11 +1,12 @@
 ﻿using EcommerseClient.Models;
+using System;
 using System.Collections.Generic;
 
 namespace EcommerseClient.Services
 {
     public class RecomendationService
     {
-        public static string BaseUrl = "http://localhost:5007/";
+        public static string BaseUrl = Environment.GetEnvironmentVariable("RecomendationService");
 
         public static List<Producto> Recomended(string id)
         {
