@@ -15,5 +15,10 @@ namespace EcommerseClient.Services
         {
             return new HttpRequests().TheGet<Producto>("api/ProductCatalogService/" + id, BaseUrl);
         }
+
+        public static ProductCatalog CatalogByName(string name)
+        {
+            return new HttpRequests().TheGet<ProductCatalog>("api/ProductCatalogService?name=" + name, BaseUrl);
+        }
     }
 }

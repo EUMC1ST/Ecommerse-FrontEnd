@@ -17,8 +17,29 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 
+    <style>
+        .efec {
+            animation: fadeInAnimation ease 5s;
+            animation-fill-mode: forwards;
+        }
+
+        @@keyframes fadeInAnimation {
+            0% {
+                opacity: 0;
+            }
+
+            90% {
+                opacity: .8;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+
 </head>
-<body onload="TraeProduct()">
+<body onload="curmenu()" class="efec">
     <partial name="_CookieConsentPartial" />
     <partial name="_Navbar" />
     <div>
@@ -49,7 +70,94 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
+    @using EcommerseClient.Services
+    <script>
+        function oli()
+        {
+            alert('oli');
+        }
+
+        function curmenu() {
+            $("#currencySelec").val('@CurrencyService.cur');
+        }
+
+        var cur = '@CurrencyService.cur';
+        partial = false;
+        idproducto = "";
+        function CoinChange() {
+            if (!partial) {
+                cur = $("#currencySelec").val();
+                document.location = "Home?=" + cur;
+                partial = false;
+            }
+            else
+            {
+                var cur = $("#currencySelec").val();
+                Buy(idproducto);
+            }
+        }
+
+        function Buy(id) {
+            cur = $("#currencySelec").val();
+            $.ajax(
+                {
+                    url: '@Url.Action("BuyProducts", "Home")?id=' + id + '&currency=' + cur,
+                    type: 'GET',
+                    success: function (result)
+                    {
+                        $('#contenedor').html(result);
+                    }
+                });
+            idproducto = id;
+            partial = true;
+        }
+
+        function Carro() {
+            cur = $("#currencySelec").val();
+            $.ajax(
+                {
+                    url: '/api/cart',
+                    type: 'POST',
+                    data:
+                    {
+                        idProduct: $("#prodId").val(),
+                        quantity: $("#quantity").val(),
+                        currency: cur
+                    },
+                    success: function ()
+                    {
+                        document.location = "Cart";
+                    }
+                });
+        }
+
+        function DeleteCart() {
+                $.ajax(
+                {
+                    url: "/api/cart/delete",
+                    type: "DELETE",
+                    success: function ()
+                    {
+                        location.reload();
+                    }
+                });
+        }
+
+        function SearchProd() {
+            $.ajax(
+               {
+                    url: "/Home/SearchByName?name=" + $('#query').val(),
+                    type: 'GET',
+                    success: function (result)
+                    {
+                        $('#contenedor').html(result);
+                    }
+               });
+        }
+
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>
 </html>
+

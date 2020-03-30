@@ -1,18 +1,32 @@
 ﻿@model EcommerseClient.Models.Producto
-@* de ayer *@
+@using EcommerseClient.Services
+
+<script>
+    $('#escondele').show();
+</script>
+
 <div class="py-5">
 
     <div class="container bg-light py-3 px-lg-5 py-lg-5">
         <div class="row">
             <div id="foto" hidden>@Model.picture</div>
-            <input type="hidden" value="@Model.id" id="prodId"/>
+            <input type="hidden" value="@Model.id" id="prodId" />
             <div class="col-12 col-lg-5">
                 <img class="img-fluid border" style="width: 100%;" src="@Model.picture" />
             </div>
             <div class="col-12 col-lg-7">
                 <h2 id="titulo">@Model.name</h2>
                 <p class="text-muted">
-                    @Model.priceUsd.currencyCode @Model.priceUsd.units.@Model.priceUsd.nanos
+                    @{ 
+                        double precio = CurrencyService.Conversion(new CurrencyChange()
+                        {
+                            CurrencyCode = Model.priceUsd.currencyCode,
+                            Units = Model.priceUsd.units,
+                            Nano = Model.priceUsd.nanos,
+                            CurrencyType = CurrencyService.cur
+                        });
+                    }
+                    @CurrencyService.cur @precio
                 </p>
                 <hr />
                 <p>
@@ -43,31 +57,12 @@
                         <option>10</option>
 
                     </select>
-                    <button class="btn btn-info btn-lg" onclick="Carro('@Model.priceUsd.currencyCode', '@Model.priceUsd.units', '@Model.priceUsd.nanos')">Add to Cart</button>
+                    <button class="btn btn-info btn-lg ml-3" onclick="Carro('@Model.priceUsd.currencyCode', '@Model.priceUsd.units', '@Model.priceUsd.nanos')">Add to Cart</button>
                 </div>
-                <hr />
-                <button class="btn btn-lg btn-info ml-3" onclick="GetRecomendation('@Model.id')">View recomendation</button>
             </div>
-
         </div>
+        <hr />
+        @{await Html.RenderPartialAsync("Recomendation", RecomendationService.Recomended(Model.id));}
     </div>
 </div>
 <hr />
-
-<div id="recomendado">
-
-</div>
-
-<script>
-    function GetRecomendation(id)
-    {
-        console.log(3)
-        $.ajax({
-            url: '@Url.Action("Recomendation")?id=' + id,
-            type: 'GET',
-            success: function (result) {
-                $('#recomendado').html(result);
-            }
-        })       
-    }
-</script>

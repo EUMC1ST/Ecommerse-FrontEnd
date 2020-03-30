@@ -51,5 +51,15 @@ namespace EcommerseClient.Services
             var readresult = result.Content.ReadAsStringAsync().Result;
             return readresult;
         }
+
+        public string TheDelete(string pathController, string BaseUrl)
+        {
+            client.BaseAddress = new Uri(BaseUrl);
+            var response = client.DeleteAsync(pathController);
+            response.Wait();
+            var result = response.Result;
+            var readresult = result.Content.ReadAsStringAsync().Result;
+            return readresult;
+        }
     }
 }

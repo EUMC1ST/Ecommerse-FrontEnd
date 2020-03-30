@@ -1,70 +1,54 @@
-
+@model ProductCatalog
+@using EcommerseClient.Services
+@using EcommerseClient.Models
 
 <div id="contenedor">
-
-</div>
-
-<script>
-
-        function TraeProduct() {
-            $.ajax(
+    <div class="album py-5 bg-light">
+        <div class="container">
+            @if (Model.totalItems == 0)
             {
-                url: '@Url.Action("Products")?currency=' + $('#currencySelec').val(),
-                type: 'GET',
-                success: function (result) {
-                    $('#contenedor').html(result);
-                }
-             });
-        }
-
-        function Buy(id) {
-            $.ajax(
+                <h2 class="text-muted">No products found</h2>
+            }
+            else
             {
-                url: '@Url.Action("BuyProducts")?id=' + id + '&currency=' + $('#currencySelec').val(),
-                type: 'GET',
-                success: function (result) {
-                    $('#contenedor').html(result);
-                }
-             });
-        }
-
-        function Carro(curren, unit, nano) {
-            $.ajax(
-            {
-                    url: '/api/cart',
-                    type: 'POST',
-                    data:
+                <div class="row">
+                    @foreach (var item in Model.products)
                     {
-                        idClient: 'ELid',
-                        idProduct: $("#prodId").val(),
-                        quantity: $("#quantity").val(),
-                        currency: curren,
-                        units: unit,
-                        nanos: nano
-                    },
-                    success: function () {
-                        document.location = "Home/TheCart";
+                        <div class="col-md-4 px-2 py-1 my-4">
+                            <div class="card shadow-sm h-100">
+                                <svg class="bd-placeholder-img card-img-top" height="225" width="100%" xmlns="http://www.w3.org/2000/svg">
+                                    <image href="@item.picture" height="100%" width="100%" />
+                                </svg>
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.name</h5>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a onclick="Buy('@item.id')" class="btn btn-sm btn-outline-secondary">Buy</a>
+                                        @{
+                                            string cur = CurrencyService.cur;
+                                            if (cur == null)
+                                            {
+                                                cur = "USD";
+                                            }
+                                            double precio = CurrencyService.Conversion(new CurrencyChange()
+                                            {
+                                                CurrencyCode = item.priceUsd.currencyCode,
+                                                Units = item.priceUsd.units,
+                                                Nano = item.priceUsd.nanos,
+                                                CurrencyType = cur
+                                            });
+                                        }
+                                        <div>@cur @precio</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
-                });
-        }
+                </div>
+            }
 
-        function shipping() {
-            $.ajax({
-                url: '@Url.Action("Shipping")',
-                type: 'POST',
-                data:
-                {
-                    eltotal: $('#eltotal').text()
-                },
-                success: function (result) {
-                    console.log(result);
-                    $('#shippingCost').html(result);
-                }
-            });
-        }
-</script>
-
-
+        </div>
+    </div>
+</div>
 
 
 

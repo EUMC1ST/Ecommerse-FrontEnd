@@ -1,28 +1,41 @@
 ﻿@model CheckoutModel
+@using EcommerseClient.Services
+<script>
+    $("#currencySelec").hide();
+    $('#escondele').hide();
+</script>
 
-    <div class="container bg-light py-3 px-lg-5">
-        <div class="row mt-5 py-2">
-            <div class="col">
-                <h3>
-                    Your order is complete!
-                </h3>
-                <p>
-                    Order Confirmation ID: <strong>@Model.OderId</strong>
-                    <br>
-                    Shipping Tracking ID: <strong>@Model.ShippingTrackingId</strong>
-                </p>
-                <p>
-                    <br>
-                    Total Paid: <strong>@Model.TotalToPay</strong>
-                </p>
-                <a class="btn btn-primary" href="/" role="button">Browse other products &rarr; </a>
-            </div>
-        </div>
-        <hr />
-
-        <div class="row mt-5 py-2">
-            recomendations
+<div id="contenedor" class="container bg-light py-3 px-lg-5">
+    <div class="row mt-5 py-2">
+        <div class="col">
+            <h3>
+                Your order is complete!
+            </h3>
+            <p>
+                Order Confirmation ID: <strong>@Model.OderId</strong>
+                <br>
+                Shipping Tracking ID: <strong>@Model.ShippingTrackingId</strong>
+            </p>
+            <p>
+                <br>
+                Total Paid: <strong>@CurrencyService.cur @Model.TotalToPay</strong>
+            </p>
+            <a class="btn btn-primary" href="/Home" role="button">Browse other products &rarr; </a>
         </div>
     </div>
+    <hr />
+
+    @{
+        //List<Producto> recomended = new List<Producto>();
+        //Cart car = CartService.GetCart(Context.Request.Cookies["UserId"]);
+        //foreach (var item in car.items)
+        //{
+        //    recomended.AddRange(RecomendationService.Recomended(item.idProduct));
+        //}
+        //await Html.RenderPartialAsync("Recomendation", recomended);
+
+        CartService.DeleteCart(Context.Request.Cookies["UserId"]);
+    }
+</div>
 
 
